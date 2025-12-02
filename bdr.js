@@ -5,9 +5,14 @@ const result = document.getElementById('result');
 let currentExp = "";
 let justCalculated = false;
 
+// Fungsi untuk menampilkan operator * sebagai ×
+function formatDisplay(exp) {
+    return exp.replace(/\*/g, '×');
+}
+
 // Fungsi utama untuk memperbarui tampilan
 function updateDisplay() {
-    result.textContent = currentExp || "0";
+    result.textContent = formatDisplay(currentExp) || "0";
 }
 
 // === TOMBOL ANGKA ===
@@ -20,27 +25,27 @@ document.querySelectorAll('.num-btn').forEach(btn => {
             try {
                 // Evaluasi ekspresi
                 const calc = eval(currentExp);
-                expression.textContent = currentExp + " =";
+                expression.textContent = formatDisplay(currentExp) + " =";
                 result.textContent = calc;
                 currentExp = calc.toString();
-                justCalculated = true; // tanda hasil sudah keluar
+                justCalculated = true;
             } catch {
                 result.textContent = "Error";
             }
         }
+
         // Jika tombol "." ditekan
         else if (val === '.') {
-            // Cegah dua titik berturut-turut
             if (!currentExp.endsWith('.')) {
                 currentExp += val;
             }
             updateDisplay();
             justCalculated = false;
         }
+
         // Tombol angka normal
         else {
             if (justCalculated && !isNaN(val)) {
-                // Jika baru selesai "=" dan user menekan angka baru → mulai hitungan baru
                 currentExp = val;
             } else {
                 currentExp += val;
@@ -67,9 +72,11 @@ document.querySelectorAll('.btn[data-op]').forEach(op => {
                     result.textContent = "Error";
                 }
             }
+            return;
         }
+
         // Persen
-        else if (oper === '%') {
+        if (oper === '%') {
             if (currentExp) {
                 try {
                     const num = parseFloat(eval(currentExp));
@@ -79,20 +86,21 @@ document.querySelectorAll('.btn[data-op]').forEach(op => {
                     result.textContent = "Error";
                 }
             }
+            return;
         }
+
         // Operator matematika umum
-        else {
-            if (justCalculated) justCalculated = false;
-            const lastChar = currentExp.slice(-1);
+        const lastChar = currentExp.slice(-1);
 
-            // Cegah operator ganda (misal ++, --, **, dsb.)
-            if (['+', '-', '*', '/'].includes(lastChar)) {
-                currentExp = currentExp.slice(0, -1);
-            }
-
-            currentExp += oper;
-            updateDisplay();
+        // Cegah operator ganda
+        if (['+', '-', '*', '/'].includes(lastChar)) {
+            currentExp = currentExp.slice(0, -1);
         }
+
+        if (justCalculated) justCalculated = false;
+
+        currentExp += oper; // tetap simpan "*" (bukan ×)
+        updateDisplay();
     });
 });
 
@@ -112,7 +120,7 @@ document.getElementById('back-delete').addEventListener('click', () => {
     }
 });
 
-// === OPTIONAL: DUKUNG INPUT KEYBOARD ===
+// === DUKUNG INPUT KEYBOARD ===
 document.addEventListener('keydown', (e) => {
     const key = e.key;
 
@@ -121,27 +129,40 @@ document.addEventListener('keydown', (e) => {
         currentExp += key;
         updateDisplay();
         justCalculated = false;
-    } else if (['+', '-', '*', '/'].includes(key)) {
-        currentExp += key;
+    }
+
+    else if (['+', '-', '*', '/'].includes(key)) {
+        const lastChar = currentExp.slice(-1);
+        if (['+', '-', '*', '/'].includes(lastChar)) return;
+
+        currentExp += key;  // tetap gunakan "*"
         updateDisplay();
-    } else if (key === 'Enter' || key === '=') {
+    }
+
+    else if (key === 'Enter' || key === '=') {
         try {
             const calc = eval(currentExp);
-            expression.textContent = currentExp + " =";
+            expression.textContent = formatDisplay(currentExp) + " =";
             result.textContent = calc;
             currentExp = calc.toString();
             justCalculated = true;
         } catch {
             result.textContent = "Error";
         }
-    } else if (key === 'Backspace') {
+    }
+
+    else if (key === 'Backspace') {
         currentExp = currentExp.slice(0, -1);
         updateDisplay();
-    } else if (key === 'Escape') {
+    }
+
+    else if (key === 'Escape') {
         currentExp = "";
         expression.textContent = "";
         result.textContent = "0";
-    } else if (key === '.') {
+    }
+
+    else if (key === '.') {
         currentExp += '.';
         updateDisplay();
     }
