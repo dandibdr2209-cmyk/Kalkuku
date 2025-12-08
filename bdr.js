@@ -5,9 +5,11 @@ const result = document.getElementById('result');
 let currentExp = "";
 let justCalculated = false;
 
-// Fungsi untuk menampilkan operator * sebagai ×
+// Fungsi untuk menampilkan operator * sebagai × dan / sebagai :
 function formatDisplay(exp) {
-    return exp.replace(/\*/g, '×');
+    return exp
+        .replace(/\*/g, '×')
+        .replace(/\//g, ' : ');
 }
 
 // Fungsi utama untuk memperbarui tampilan
@@ -23,7 +25,6 @@ document.querySelectorAll('.num-btn').forEach(btn => {
         // Jika tombol "=" ditekan
         if (val === '=') {
             try {
-                // Evaluasi ekspresi
                 const calc = eval(currentExp);
                 expression.textContent = formatDisplay(currentExp) + " =";
                 result.textContent = calc;
@@ -43,7 +44,7 @@ document.querySelectorAll('.num-btn').forEach(btn => {
             justCalculated = false;
         }
 
-        // Tombol angka normal
+        // Tombol angka biasa
         else {
             if (justCalculated && !isNaN(val)) {
                 currentExp = val;
@@ -59,7 +60,7 @@ document.querySelectorAll('.num-btn').forEach(btn => {
 // === TOMBOL OPERATOR ===
 document.querySelectorAll('.btn[data-op]').forEach(op => {
     op.addEventListener('click', () => {
-        const oper = op.getAttribute('data-op');
+        let oper = op.getAttribute('data-op');
 
         // Ubah tanda +/-
         if (oper === '+/-') {
@@ -89,22 +90,27 @@ document.querySelectorAll('.btn[data-op]').forEach(op => {
             return;
         }
 
-        // Operator matematika umum
         const lastChar = currentExp.slice(-1);
 
-        // Cegah operator ganda
+        // Jika operator ganda → hapus yang sebelumnya
         if (['+', '-', '*', '/'].includes(lastChar)) {
             currentExp = currentExp.slice(0, -1);
         }
 
         if (justCalculated) justCalculated = false;
 
-        currentExp += oper; // tetap simpan "*" (bukan ×)
+        // Jika user klik tombol ":" → tambahkan "/" ke ekspresi
+        if (oper === ':') {
+            currentExp += '/';
+        } else {
+            currentExp += oper;
+        }
+
         updateDisplay();
     });
 });
 
-// === TOMBOL CLEAR (C) ===
+// === CLEAR ===
 document.getElementById('clear').addEventListener('click', () => {
     currentExp = "";
     expression.textContent = "";
@@ -112,7 +118,7 @@ document.getElementById('clear').addEventListener('click', () => {
     justCalculated = false;
 });
 
-// === TOMBOL BACKSPACE (←) ===
+// === BACKSPACE ===
 document.getElementById('back-delete').addEventListener('click', () => {
     if (!justCalculated) {
         currentExp = currentExp.slice(0, -1);
@@ -120,10 +126,11 @@ document.getElementById('back-delete').addEventListener('click', () => {
     }
 });
 
-// === DUKUNG INPUT KEYBOARD ===
+// === INPUT KEYBOARD ===
 document.addEventListener('keydown', (e) => {
     const key = e.key;
 
+    // Angka
     if (/[0-9]/.test(key)) {
         if (justCalculated) currentExp = "";
         currentExp += key;
@@ -131,14 +138,24 @@ document.addEventListener('keydown', (e) => {
         justCalculated = false;
     }
 
+    // Operator dasar
     else if (['+', '-', '*', '/'].includes(key)) {
         const lastChar = currentExp.slice(-1);
         if (['+', '-', '*', '/'].includes(lastChar)) return;
-
-        currentExp += key;  // tetap gunakan "*"
+        currentExp += key;
         updateDisplay();
     }
 
+    // Keyboard ":" menjadi pembagian
+    else if (key === ':') {
+        const lastChar = currentExp.slice(-1);
+        if (!['+', '-', '*', '/'].includes(lastChar)) {
+            currentExp += '/';
+            updateDisplay();
+        }
+    }
+
+    // Enter = hitung
     else if (key === 'Enter' || key === '=') {
         try {
             const calc = eval(currentExp);
@@ -151,17 +168,20 @@ document.addEventListener('keydown', (e) => {
         }
     }
 
+    // Backspace
     else if (key === 'Backspace') {
         currentExp = currentExp.slice(0, -1);
         updateDisplay();
     }
 
+    // Escape untuk clear
     else if (key === 'Escape') {
         currentExp = "";
         expression.textContent = "";
         result.textContent = "0";
     }
 
+    // Titik desimal
     else if (key === '.') {
         currentExp += '.';
         updateDisplay();
