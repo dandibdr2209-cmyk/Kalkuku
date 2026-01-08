@@ -4,8 +4,9 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Bahtiar dan vino - kalkuku</title>
     <link rel="stylesheet" href="bdr.css">
-    <title>Document</title>
+
 </head>
 
 <body>
@@ -13,12 +14,15 @@
         <header class="container-output page">
             <div>
                 <main class="head-btn">
+
                     <div>
-                        <button>main</button>
-                        <button>section</button>
+                        <button id="btn">ARITMATIKA</button>
+                        <button id="btn-section">TRIGONOMETRI</button>
+
                     </div>
                 </main>
                 <main class="main-output">
+
                     <div>
                         <section>
                             <div>
@@ -34,7 +38,66 @@
                 </main>
             </div>
         </header>
-        <main class="container-btn page">
+        <main id="page-other" class="container-btn other page">
+            <div>
+                <section class="container-operator other">
+                    <div>
+                        <div class="btn" id="clear-freya">
+                            <h2>C</h2>
+                        </div>
+
+                        <div class="btn" id="plusminus-freya">
+                            <h2>+/-</h2>
+                        </div>
+
+
+                        <div class="btn">
+                            <h2>%</h2>
+                        </div>
+                        <div class="btn" id="back-delete">
+                            <h2><i class='bx bxs-left-arrow-square'></i></h2>
+                        </div>
+                        <div class="btn">
+                            <h2>()</h2>
+                        </div>
+
+                        <div class="btn">
+                            <h2>SIN</h2>
+                        </div>
+                        <div class="btn">
+                            <h2>COS</h2>
+                        </div>
+                        <div class="btn">
+                            <h2>TAN</h2>
+                        </div>
+                        <div class="btn" data-op="/">
+                            <h2>:</h2>
+                        </div>
+                        <div class="btn" data-op="+">
+                            <h2>+</h2>
+                        </div>
+
+                        <div class="btn" data-op="*">
+                            <h2>x</h2>
+                        </div>
+                        <div class="btn" data-op="-">
+                            <h2>-</h2>
+                        </div>
+                        <div class="btn" id="switch-page">
+                            <h2>⇄</h2>
+                        </div>
+                        <div class="btn">
+                            <h2>.</h2>
+                        </div>
+                        <div class="btn" data-action="equal">
+                            <h1>=</h1>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+        <main id="page" class="container-btn page">
             <div>
                 <section class="container-operator">
                     <div>
@@ -99,14 +162,16 @@
                         <div class="num-btn">
                             <h2>.</h2>
                         </div>
-                        <div class="num-btn" id="equal">
+                        <div class="num-btn" data-action="equal">
                             <h2>=</h2>
                         </div>
                     </div>
-                </section>
+            </div>
+            </section>
             </div>
         </main>
     </main>
+
     <script src="bdr.js"></script>
 </body>
 

@@ -53,12 +53,8 @@ body {
     text-transform: capitalize;
 }
 
-.head-btn>div button:nth-child(1) {
+.head-btn>div button {
     color: #202020;
-}
-
-.head-btn>div button:nth-child(2) {
-    background: #00809D;
 }
 
 .main-output {
@@ -98,10 +94,27 @@ h3 {
 }
 
 .container-btn {
+    /* width: 0; */
     max-width: 25em;
     /* display: flex; */
     /* background: blue; */
+    overflow-x: hidden;
     height: 100%;
+}
+
+.container-btn.active {
+    width: 0;
+}
+
+.container-btn.other {
+    width: 0;
+    overflow-x: hidden;
+}
+
+.container-btn.other.native {
+    width: 100%;
+    max-width: 25em;
+    /* background-color: red; */
 }
 
 .container-btn>div {
@@ -116,6 +129,15 @@ h3 {
     height: 100%;
     max-height: 10em;
     /* background: blueviolet; */
+}
+
+.container-operator.other {
+    max-height: 27em;
+}
+
+.container-operator.other .btn:nth-child(15) {
+    background: #00809D;
+    grid-column: 3 / span 2;
 }
 
 .container-operator>div {
@@ -169,6 +191,20 @@ h3 {
 .container-number .num-btn:nth-child(12) h2 {
     background: #00809D;
     color: #f1f1f1;
+}
+
+.container-number.other {
+    max-height: 15em;
+    /* background-color: red; */
+}
+
+.container-number.other .num-btn:nth-child(3) {
+    background: transparent;
+}
+
+.container-number.other .num-btn:nth-child(3) h2 {
+    background: transparent;
+    color: #202020;
 }
 
 .container-number>div {
@@ -246,4 +282,95 @@ h3 {
     .num-btn h2 {
         font-size: 18px;
     }
+}
+
+
+/* ===== ANIMASI TOMBOL ===== */
+
+.btn,
+.num-btn {
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.1s ease, box-shadow 0.1s ease, background 0.1s;
+}
+
+.btn:active,
+.num-btn:active,
+.btn.active-key,
+.num-btn.active-key {
+    transform: scale(0.92);
+    box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.3);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+
+/* ===== ANIMASI PINDAH HALAMAN ===== */
+
+.page {
+    transition: transform 0.5s ease, opacity 0.4s ease;
+}
+
+#page {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+#page.active {
+    transform: translateX(-120%);
+    opacity: 0;
+}
+
+#page-other {
+    transform: translateX(120%);
+    opacity: 0;
+}
+
+#page-other.native {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+
+/* ===== MODE INDICATOR ===== */
+
+.head-btn button {
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.head-btn button.mode-active {
+    opacity: 1;
+    background: #00809D;
+    color: white;
+    box-shadow: 0 0 10px rgba(76, 175, 239, 0.6);
+}
+
+.history-container {
+    max-height: 120px;
+    overflow-y: auto;
+    padding: 10px;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+.history-container h4 {
+    margin-bottom: 6px;
+    font-size: 13px;
+    color: #aaa;
+}
+
+#history-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#history-list li {
+    padding: 4px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+#history-list li:hover {
+    opacity: 0.7;
 }
