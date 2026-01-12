@@ -257,3 +257,23 @@ document.addEventListener("keydown", e => {
         updateDisplay();
     }
 });
+const toggleBtn = document.getElementById("theme-toggle");
+const body = document.body;
+
+// cek tema terakhir
+if (localStorage.getItem("theme") === "dark") {
+    body.classList.add("dark");
+    toggleBtn.innerHTML = "<i class='bx bx-sun'></i>";
+}
+
+toggleBtn.addEventListener("click", () => {
+    body.classList.toggle("dark");
+
+    if (body.classList.contains("dark")) {
+        localStorage.setItem("theme", "dark");
+        toggleBtn.innerHTML = "<i class='bx bx-sun'></i>";
+    } else {
+        localStorage.setItem("theme", "light");
+        toggleBtn.innerHTML = "<i class='bx bx-moon'></i>";
+    }
+});
